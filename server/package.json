@@ -1,5 +1,5 @@
 {
-  "name": "bing-search",
+  "name": "bing-search-server",
   "version": "0.1.0",
   "private": true,
   "scripts": {
