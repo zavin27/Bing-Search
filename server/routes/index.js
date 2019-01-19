@@ -48,7 +48,7 @@ passport.deserializeUser(function (id, done) {
  */
 router.post('/login', passport.authenticate('local'), (req, res) => {
     jwt.sign({user: req.user}, process.env.SECRET_KEY, {expiresIn: '24h'}, (err, token) => {
-        res.status(200).json({
+        return res.status(200).json({
             access_token: token,
             userId: req.user.id,
             username: req.user.username
@@ -61,18 +61,29 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
  * URL = /register
  */
 router.post('/register', (req, res) => {
-    bcrypt.hash(req.body.password, 10, function (err, hash) {
-        models.User.create({
-            username: req.body.username,
-            password: hash
-        }).then(user => {
-            res.status(200).json(user);
-        }).catch(error => {
-            res.status(400).json({
-                error
+    if (req.body.password === req.body.confirmPassword) {
+        bcrypt.hash(req.body.password, 10, function (err, hash) {
+            models.User.create({
+                username: req.body.username,
+                password: hash
+            }).then(user => {
+                jwt.sign({user}, process.env.SECRET_KEY, {expiresIn: '24h'}, (err, token) => {
+                    return res.status(200).json({
+                        access_token: token,
+                        userId: user.id,
+                        username: user.username
+                    });
+                });
+            }).catch(error => {
+                return res.status(400).json({
+                    error
+                });
             });
         });
-    });
+    } else {
+        return res.sendStatus(400)
+    }
+    
 });
 /**
  * Log User out
@@ -83,13 +94,6 @@ router.post('/logout', (req, res) => {
     
     res.status(200).json({
         message: 'successfully logged out'
-    });
-});
-
-router.get('/', verifyToken, (req, res) => {
-    let authData = req.authData;
-    res.status(200).json({
-        authData
     });
 });
 

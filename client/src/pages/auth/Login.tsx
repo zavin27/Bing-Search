@@ -4,19 +4,32 @@ import Paper from "@material-ui/core/es/Paper/Paper";
 import FormControl from "@material-ui/core/FormControl/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText/FormHelperText";
 import * as React from 'react';
-import './Login.css';
+import './AuthStyles.css';
 import ReeValidate from "ree-validate";
+import {Link, RouteComponentProps, withRouter} from "react-router-dom";
+import {Dispatch} from "redux";
+import {authApi} from "../../rest-api/Auth";
+import {connect} from "react-redux";
+import {User} from "../../models/User.model";
+import {authSuccess} from "../../store/actions/auth";
 
-// import axios from 'axios';
+interface LoginForm {
+    username: string;
+    password: string
+}
 
+interface Props extends RouteComponentProps {
+    login: (form: LoginForm) => Promise<any>;
+    authSuccess: (user: User) => void;
+}
 
-class Login extends React.Component {
+class Login extends React.Component<Props> {
     /**
      * initialize validator
      */
     validator = new ReeValidate({
-        username: 'required',
-        password: 'required',
+        username: 'required|min:3|alpha_num',
+        password: 'required|min:6',
     });
 
     state = {
@@ -56,23 +69,25 @@ class Login extends React.Component {
         });
     };
     /**
-     * Submit the form to the db
+     * Submit the form
      * @param form
      */
     submit = (form) => {
-        // axios.post('/login', form).then(response => {
-        //   console.log(response);
-        //   localStorage.setItem('token', response.data.access_token);
-        // }).catch(error => {
-        //   console.log(error);
-        // });
+        this.props.login(form)
+            .then(data => {
+                this.props.authSuccess(data);
+                this.props.history.push('/')
+            })
+            .catch(error => {
+
+            })
     };
 
     render() {
         const {form, errors} = this.state;
         return (
-            <div className='login-container'>
-                <Paper className='m-auto login-form-container p-3 text-center'>
+            <div className='main-container'>
+                <Paper className='m-auto form-container p-3 text-center'>
                     <h2>Bing Search</h2>
                     <h4 style={{marginBottom: 50}}>Login</h4>
                     <form onSubmit={this.handleSubmit} className={'w-100'}>
@@ -114,6 +129,9 @@ class Login extends React.Component {
                             <FormHelperText>{errors.first('password')}</FormHelperText>
                             }
                         </FormControl>
+                        <div className='w-100 text-right'>
+                            <Link to='/register' className="mr-2">Don't have an account?</Link>
+                        </div>
                         <Button variant={"outlined"} type={'submit'} color={"primary"} className={'mx-auto mt-3'}>
                             Login
                         </Button>
@@ -124,4 +142,14 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+/**
+ * define the dispatch actions
+ * @param dispatch the actions to be dispatched
+ */
+const mapDispatchToProps = (dispatch: Dispatch) => {
+    return {
+        login: (form: LoginForm) => dispatch(authApi.login(form) as any),
+        authSuccess: (user: User) => dispatch(authSuccess(user))
+    }
+};
+export default withRouter(connect(null, mapDispatchToProps)(Login));
