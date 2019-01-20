@@ -8,7 +8,7 @@ import './AuthStyles.css';
 import ReeValidate from "ree-validate";
 import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import {Dispatch} from "redux";
-import {authApi} from "../../rest-api/Auth";
+import {authAPI} from "../../rest-api/Auth";
 import {connect} from "react-redux";
 import {User} from "../../models/User.model";
 import {authSuccess} from "../../store/actions/auth";
@@ -148,7 +148,7 @@ class Login extends React.Component<Props> {
  */
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        login: (form: LoginForm) => dispatch(authApi.login(form) as any),
+        login: (form: LoginForm) => dispatch(authAPI.login(form) as any),
         authSuccess: (user: User) => dispatch(authSuccess(user))
     }
 };

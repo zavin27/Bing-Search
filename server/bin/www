@@ -23,7 +23,7 @@ app.set('port', port);
 
 let server = http.createServer(app);
 
-models.sequelize.sync({force: true}).then(() => {
+models.sequelize.sync().then(() => {
   /**
    * Listen on provided port, on all network interfaces.
    */

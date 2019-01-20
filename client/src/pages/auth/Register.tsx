@@ -9,7 +9,7 @@ import ReeValidate from "ree-validate";
 import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
-import {authApi} from "../../rest-api/Auth";
+import {authAPI} from "../../rest-api/Auth";
 import {User} from "../../models/User.model";
 import {authSuccess} from "../../store/actions/auth";
 
@@ -197,7 +197,7 @@ class Register extends React.Component<Props> {
  */
 const mapDispatchToProps = (dispatch: Dispatch) => {
     return {
-        register: (form: RegisterForm) => dispatch(authApi.register(form) as any),
+        register: (form: RegisterForm) => dispatch(authAPI.register(form) as any),
         authSuccess: (user: User) => dispatch(authSuccess(user))
     }
 };

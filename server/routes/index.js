@@ -1,7 +1,6 @@
 let express = require('express');
 let passport = require("passport");
 let LocalStrategy = require('passport-local').Strategy;
-let verifyToken = require("../common/verifyToken");
 let models = require('../models');
 let bcrypt = require('bcrypt');
 let jwt = require("jsonwebtoken");
@@ -44,7 +43,7 @@ passport.deserializeUser(function (id, done) {
 
 /**
  * User Login api endpoint
- * URL = /login
+ * ENDPOINT = /login
  */
 router.post('/login', passport.authenticate('local'), (req, res) => {
     jwt.sign({user: req.user}, process.env.SECRET_KEY, {expiresIn: '24h'}, (err, token) => {
@@ -58,7 +57,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 /**
  * Register New User api endpoint
- * URL = /register
+ * ENDPOINT = /register
  */
 router.post('/register', (req, res) => {
     if (req.body.password === req.body.confirmPassword) {
@@ -87,7 +86,7 @@ router.post('/register', (req, res) => {
 });
 /**
  * Log User out
- * URL = /logout
+ * ENDPOINT = /logout
  */
 router.post('/logout', (req, res) => {
     req.logout();

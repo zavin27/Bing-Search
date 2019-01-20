@@ -11,6 +11,7 @@ const sequelize = new Sequelize( process.env.DB_NAME, process.env.DB_USER, proce
 } );
 const models = {
     User: sequelize.import( "./user" ),
+    SearchHistory: sequelize.import("./search-history"),
 };
 
 

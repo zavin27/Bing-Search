@@ -14,11 +14,10 @@ interface RegisterForm {
 /**
  * Authentication RESTful requests
  */
-class AuthApi {
+class AuthAPI {
     /**
      * Login
      * POST Request
-     * API endpoint : /login
      * @param form
      */
     login = (form: LoginForm) => {
@@ -41,7 +40,6 @@ class AuthApi {
     /**
      * Register new User
      * POST Request
-     * API endpoint : /register
      * @param form
      */
     register = (form: RegisterForm) => {
@@ -62,4 +60,4 @@ class AuthApi {
 
 }
 
-export const authApi = new AuthApi();
+export const authAPI = new AuthAPI();

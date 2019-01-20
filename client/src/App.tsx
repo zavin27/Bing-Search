@@ -22,7 +22,7 @@ class App extends React.Component<Props> {
     render() {
         const {isAuthenticated} = this.props;
         return (
-            <div>
+            <div className='position-relative'>
                 {isAuthenticated
                     ?
                     <Switch>

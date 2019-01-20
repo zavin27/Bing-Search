@@ -7,6 +7,8 @@ let logger = require('morgan');
 let passport = require('passport');
 
 const indexRouter = require('./routes/index');
+const SearchRouter = require('./routes/search');
+const SearchHistoryRouter = require('./routes/searchHistory');
 
 let app = express();
 
@@ -18,6 +20,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 app.use('/', indexRouter);
+app.use('/search', SearchRouter);
+app.use('/search-history', SearchHistoryRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
