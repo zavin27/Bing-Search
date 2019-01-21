@@ -7,7 +7,6 @@ module.exports = function (sequalize, DataTypes) {
         password: {
             type: DataTypes.STRING,
             allowNull: false,
-            
         }
     });
     User.associate = function (models) {

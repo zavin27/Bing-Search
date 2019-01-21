@@ -103,7 +103,7 @@ class Home extends React.Component<Props> {
                 <div className='container'>
                     <div className="row mt-2 justify-content-end">
                         <Button variant={"outlined"} onClick={this.handleLogOut}>
-                            Logout
+                            Iesire
                         </Button>
                     </div>
                     <div className="mt-3 row justify-content-center">
@@ -123,7 +123,7 @@ class Home extends React.Component<Props> {
                                             </IconButton>
                                         </InputAdornment>),
                                 }}
-                                placeholder='Enter here to search'
+                                placeholder='Cautati aici...'
                                 inputRef={this.inputRef}
                             />
                             {recentlySearched && recentlySearched.length && showRecentlySearch

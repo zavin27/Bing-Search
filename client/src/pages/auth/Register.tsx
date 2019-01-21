@@ -12,6 +12,7 @@ import {connect} from "react-redux";
 import {authAPI} from "../../rest-api/Auth";
 import {User} from "../../models/User.model";
 import {authSuccess} from "../../store/actions/auth";
+import ro from "ree-validate/dist/locale/ro";
 
 interface RegisterForm {
     username: string;
@@ -25,6 +26,15 @@ interface Props extends RouteComponentProps {
 }
 
 class Register extends React.Component<Props> {
+    dictionary = {
+        ro: {
+            ...ro,
+            attributes: {
+                username: 'Nume Utilizator',
+                password: 'Parola',
+            }
+        }
+    };
     /**
      * initialize validator
      */
@@ -43,6 +53,10 @@ class Register extends React.Component<Props> {
         errors: this.validator.errors,
         confirmError: null
     };
+
+    componentDidMount(): void {
+        this.validator.localize('ro', this.dictionary.ro);
+    }
     /**
      * Handles field Changes
      * @param event
@@ -69,7 +83,7 @@ class Register extends React.Component<Props> {
         const {form} = this.state;
 
         if (this.state.form.password !== value) {
-            this.setState({confirmError: 'Passwords fields do no match', form})
+            this.setState({confirmError: 'Câmpurile de parole nu se potrivesc.', form})
         } else {
             this.setState({confirmError: null, form})
         }
@@ -90,9 +104,9 @@ class Register extends React.Component<Props> {
                 } else {
                     let errMsg = '';
                     if (this.state.confirmError && this.state.confirmError.length) {
-                        errMsg = 'Passwords fields do not match';
+                        errMsg = 'Câmpurile de parole nu se potrivesc.';
                     } else if (this.state.form.confirmPassword === '') {
-                        errMsg = 'the confirm password field is required';
+                        errMsg = 'Câmpul Confirmare Parolă este necesar.';
                     }
                     this.setState({errors, confirmError: errMsg})
                 }
@@ -119,20 +133,18 @@ class Register extends React.Component<Props> {
             <div className='main-container'>
                 <Paper className='m-auto form-container p-3 text-center'>
                     <h2>Bing Search</h2>
-                    <h4 style={{marginBottom: 50}}>Register</h4>
+                    <h4 style={{marginBottom: 50}}>Inregistrare</h4>
                     <form onSubmit={this.handleSubmit} className={'w-100'}>
                         <FormControl fullWidth className='mb-4' error={errors.has('username')}>
                             <TextField
                                 variant={"outlined"}
                                 name='username'
-                                label="Username"
-                                placeholder={'Enter Your Username'}
+                                label="Nume Utilizator"
                                 type="text"
                                 value={form.username}
                                 onChange={this.handleChange}
                                 error={errors.has('username')}
                                 InputLabelProps={{
-                                    shrink: true,
                                     required: true
                                 }}
                             />
@@ -144,14 +156,12 @@ class Register extends React.Component<Props> {
                             <TextField
                                 variant={"outlined"}
                                 name='password'
-                                label="Password"
+                                label="Parola"
                                 type="password"
-                                placeholder={"Enter Your Password"}
                                 value={form.password}
                                 onChange={this.handleChange}
                                 error={errors.has('password')}
                                 InputLabelProps={{
-                                    shrink: true,
                                     required: true
                                 }}
                             />
@@ -163,14 +173,12 @@ class Register extends React.Component<Props> {
                             <TextField
                                 variant={"outlined"}
                                 name='confirmPassword'
-                                label="Confirm password"
+                                label="Confirmare Parola"
                                 type="password"
-                                placeholder={"Reenter Your Password"}
                                 value={form.confirmPassword}
                                 onChange={this.handleChange}
                                 error={!!confirmError}
                                 InputLabelProps={{
-                                    shrink: true,
                                     required: true
                                 }}
                             />
@@ -179,10 +187,10 @@ class Register extends React.Component<Props> {
                             }
                         </FormControl>
                         <div className='w-100 text-right'>
-                            <Link to='/login' className="mr-2">Already have an account?</Link>
+                            <Link to='/login' className="mr-2">Aveti deja un cont?</Link>
                         </div>
                         <Button variant={"outlined"} type={'submit'} color={"primary"} className={'mx-auto mt-3'}>
-                            Register
+                            Inregistrare
                         </Button>
                     </form>
                 </Paper>
